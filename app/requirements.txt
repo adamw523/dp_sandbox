@@ -1,0 +1,6 @@
+asyncpg
+fastapi
+psycopg2-binary
+setuptools
+sqlmodel
+yoyo-migrations
