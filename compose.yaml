@@ -17,4 +17,29 @@ services:
     ports:
       - 8523:8000
     command: ["fastapi", "dev", "--host", "0.0.0.0", "app/main.py"]
-  
+
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/client
+
+  pgwarehouse:
+    build:
+      context: pgwarehouse
+      dockerfile: Dockerfile
+    volumes:
+      - ./pgwarehouse:/pgwarehosue
+    environment:
+      PGHOST: postgres
+      PGDATABASE: ${POSTGRES_DB}
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      SNOWSQL_ACCOUNT: ${SNOWSQL_ACCOUNT}
+      SNOWSQL_DATABASE: ${SNOWSQL_DATABASE}
+      SNOWSQL_SCHEMA: ${SNOWSQL_SCHEMA}
+      SNOWSQL_WAREHOUSE: ${SNOWSQL_WAREHOUSE}
+      SNOWSQL_USER: ${SNOWSQL_USER}
+      SNOWSQL_ROLE: ${SNOWSQL_ROLE}
+      SNOWSQL_PWD: ${SNOWSQL_PWD}

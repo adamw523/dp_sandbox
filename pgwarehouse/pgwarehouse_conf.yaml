@@ -1,0 +1,10 @@
+warehouse:
+  backend: snowflake
+
+tables:
+  - customers:
+    last_modified: updated_at
+  - invoices:
+    last_modified: updated_at
+  - invoice_line_items:
+    last_modified: updated_at

@@ -9,7 +9,7 @@ create table customers (
 );
 create table invoices (
     id uuid primary key default uuid_generate_v4(),
-    customer_id int not null,
+    customer_id uuid not null,
     invoice_date date not null,
     total_amount_cents int not null,
     status varchar(20) not null default 'pending',
@@ -22,7 +22,6 @@ create table invoice_line_items (
     product_id uuid not null,
     quantity int not null,
     unit_price_cents numeric not null,
-    line_total_cents numeric generated always as (quantity * unit_price_cents) stored,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     foreign key (invoice_id) references invoices (id) on delete cascade

@@ -1,3 +1,4 @@
+Faker
 asyncpg
 fastapi
 psycopg2-binary
