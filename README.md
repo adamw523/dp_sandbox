@@ -14,7 +14,7 @@ SNOWSQL_DATABASE={value}
 SNOWSQL_SCHEMA={value}
 SNOWSQL_WAREHOUSE={value}
 SNOWSQL_USER={value}
-SNOWSQL_PWD=32#&{value}
+SNOWSQL_PWD={value}
 SNOWSQL_ROLE={value}
 ```
 
