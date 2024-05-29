@@ -9,7 +9,7 @@ Create a file `~/env/dp_sandbox.env` with the contents:
 POSTGRES_USER={value}
 POSTGRES_PASSWORD={value}
 POSTGRES_DB={value}
-SNOWSQL_ACCOUNT=XJGHIHO-{value}
+SNOWSQL_ACCOUNT={value}
 SNOWSQL_DATABASE={value}
 SNOWSQL_SCHEMA={value}
 SNOWSQL_WAREHOUSE={value}
