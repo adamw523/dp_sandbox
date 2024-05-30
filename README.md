@@ -160,6 +160,12 @@ DESCRIBE SERVICE dp_sandbox_service;"
 snowsql -q "USE ROLE dp_sandbox_role;
 USE database dp_container_service;
 USE SCHEMA data_schema;
+SHOW SERVICES;
+SELECT SYSTEM\$GET_SERVICE_LOGS('dp_sandbox_service', 0, 'dp-sandbox-service-container');"
+
+snowsql -q "USE ROLE dp_sandbox_role;
+USE database dp_container_service;
+USE SCHEMA data_schema;
 drop service dp_sandbox_service;"
 
 
