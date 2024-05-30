@@ -166,6 +166,20 @@ SELECT SYSTEM\$GET_SERVICE_LOGS('dp_sandbox_service', 0, 'dp-sandbox-service-con
 snowsql -q "USE ROLE dp_sandbox_role;
 USE database dp_container_service;
 USE SCHEMA data_schema;
+CREATE OR REPLACE FUNCTION dp_sandbox_randint ()
+  RETURNS integer
+  SERVICE=dp_sandbox_service
+  ENDPOINT='dp-sandbox-service-endpoint'
+  AS '/randint';"
+
+snowsql -q "USE ROLE dp_sandbox_role;
+USE database dp_container_service;
+USE SCHEMA data_schema;
+select dp_sandbox_randint();"
+
+snowsql -q "USE ROLE dp_sandbox_role;
+USE database dp_container_service;
+USE SCHEMA data_schema;
 drop service dp_sandbox_service;"
 
 
