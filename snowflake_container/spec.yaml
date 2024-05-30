@@ -1,0 +1,11 @@
+spec:
+  containers:
+    - name: dp_sandbox_service_container
+      image: ${SNOW_IMAGE_PATH}:latest
+      readinessProbe:
+        port: 8000
+        path: /healthcheck
+  endpoints:
+    - name: dp_sandbox_service_endpoint
+      port: 5000
+      public: true

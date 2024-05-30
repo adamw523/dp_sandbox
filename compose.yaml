@@ -43,3 +43,22 @@ services:
       SNOWSQL_USER: ${SNOWSQL_USER}
       SNOWSQL_ROLE: ${SNOWSQL_ROLE}
       SNOWSQL_PWD: ${SNOWSQL_PWD}
+
+  snowflake_container:
+    build:
+      context: snowflake_container
+      dockerfile: Dockerfile
+    working_dir: /snowflake_container/app
+    environment:
+      SNOWSQL_ACCOUNT: ${SNOWSQL_ACCOUNT}
+      SNOWSQL_DATABASE: ${SNOWSQL_DATABASE}
+      SNOWSQL_SCHEMA: ${SNOWSQL_SCHEMA}
+      SNOWSQL_WAREHOUSE: ${SNOWSQL_WAREHOUSE}
+      SNOWSQL_USER: ${SNOWSQL_USER}
+      SNOWSQL_ROLE: ${SNOWSQL_ROLE}
+      SNOWSQL_PWD: ${SNOWSQL_PWD}
+    volumes:
+      - ./snowflake_container:/snowflake_container
+    ports:
+      - 8524:5000
+    command: ["flask", "--app", "snowy", "run", "--host", "0.0.0.0"]
