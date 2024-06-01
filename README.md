@@ -182,6 +182,15 @@ USE database dp_container_service;
 USE SCHEMA data_schema;
 drop service dp_sandbox_service;"
 
+snowsql -q "ALTER COMPUTE POOL dp_sandbox_pool STOP ALL;"
+snowsql -q "ALTER COMPUTE POOL dp_sandbox_pool SUSPEND;"
+snowsql -q "SHOW COMPUTE POOLS;"
+
+ALTER COMPUTE POOL dp_sandbox_pool STOP ALL;
+
+DROP IMAGE REPOSITORY dp_sandbox_repository;
+
+DROP STAGE dp_sandbox_repository_stage;
 
 ```
 

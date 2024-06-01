@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response
 import random
 
 
@@ -13,7 +13,9 @@ def readiness_probe():
 @app.post("/randint")
 @app.get("/randint")
 def randint():
-    return str(random.randint(1, 100))
+    response = make_response({"data": [[0, random.randint(1, 100)]]})
+    response.headers["Content-type"] = "application/json"
+    return response
 
 
 @app.route("/")
