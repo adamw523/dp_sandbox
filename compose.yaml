@@ -62,3 +62,24 @@ services:
     ports:
       - 8524:5000
     command: ["flask", "--app", "snowy", "run", "--host", "0.0.0.0"]
+
+  snow_containers_streamlit:
+    build:
+      context: snow_containers_streamlit
+      dockerfile: Dockerfile
+    working_dir: /snow_containers_streamlit
+    volumes:
+      - ./snow_containers_streamlit:/snow_containers_streamlit
+    environment:
+      SNOWSQL_ACCOUNT: ${SNOWSQL_ACCOUNT}
+      SNOWSQL_DATABASE: ${SNOWSQL_DATABASE}
+      SNOWSQL_SCHEMA: ${SNOWSQL_SCHEMA}
+      SNOWSQL_WAREHOUSE: ${SNOWSQL_WAREHOUSE}
+      SNOWSQL_USER: ${SNOWSQL_USER}
+      SNOWSQL_ROLE: ${SNOWSQL_ROLE}
+      SNOWSQL_PWD: ${SNOWSQL_PWD}
+      SNOW_SANDBOX_ROLE: ${SNOW_SANDBOX_ROLE}
+    ports:
+      - 8525:8501
+
+    command: ["streamlit", "run", "app.py"]

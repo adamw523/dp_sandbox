@@ -16,6 +16,7 @@ SNOWSQL_WAREHOUSE={value}
 SNOWSQL_USER={value}
 SNOWSQL_PWD={value}
 SNOWSQL_ROLE={value}
+SNOW_SANDBOX_ROLE={value}
 ```
 
 ## Running Stuff
@@ -86,7 +87,7 @@ snowsql -q "SHOW COMPUTE POOLS;"
 #### Repositories Commands
 
 ```bash
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE DATABASE dp_container_service;
 USE WAREHOUSE dp_sandbox_wh;
 show image repositories"
@@ -99,15 +100,15 @@ show image repositories"
 
 ```bash
 snowsql -q "CREATE DATABASE dp_container_service;"
-snowsql -q "CREATE ROLE dp_sandbox_role;"
-snowsql -q "GRANT OWNERSHIP ON DATABASE dp_container_service TO ROLE dp_sandbox_role COPY CURRENT GRANTS;"
-snowsql -q "GRANT USAGE ON WAREHOUSE dp_sandbox_wh TO ROLE dp_sandbox_role;"
-snowsql -q "GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE dp_sandbox_role;"
-snowsql -q "GRANT USAGE, MONITOR ON COMPUTE POOL dp_sandbox_pool TO ROLE dp_sandbox_role;"
-snowsql -q "GRANT ROLE dp_sandbox_role TO USER ${SNOWSQL_USER}"
+snowsql -q "CREATE ROLE ${SNOW_SANDBOX_ROLE};"
+snowsql -q "GRANT OWNERSHIP ON DATABASE dp_container_service TO ROLE ${SNOW_SANDBOX_ROLE} COPY CURRENT GRANTS;"
+snowsql -q "GRANT USAGE ON WAREHOUSE dp_sandbox_wh TO ROLE ${SNOW_SANDBOX_ROLE};"
+snowsql -q "GRANT BIND SERVICE ENDPOINT ON ACCOUNT TO ROLE ${SNOW_SANDBOX_ROLE};"
+snowsql -q "GRANT USAGE, MONITOR ON COMPUTE POOL dp_sandbox_pool TO ROLE ${SNOW_SANDBOX_ROLE};"
+snowsql -q "GRANT ROLE ${SNOW_SANDBOX_ROLE} TO USER ${SNOWSQL_USER}"
 
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE DATABASE dp_container_service;
 USE WAREHOUSE dp_sandbox_wh;
 
@@ -118,7 +119,7 @@ CREATE STAGE IF NOT EXISTS dp_sandbox_repository_stage
 
 
 
-export SNOW_REGISTRY_URL=$(snowsql -q "USE ROLE dp_sandbox_role;
+export SNOW_REGISTRY_URL=$(snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE DATABASE dp_container_service;
 USE WAREHOUSE dp_sandbox_wh;
 show image repositories" |grep DP_SANDBOX_REPOSITORY |cut -d '|' -f6 |awk '{$1=$1;print}')
@@ -133,7 +134,7 @@ echo $SNOWSQL_PWD | docker login $SNOW_REGISTRY_HOST -u $SNOWSQL_USER --password
 docker push ${SNOW_IMAGE_NAME}:latest
 
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 USE WAREHOUSE dp_sandbox_wh;
@@ -145,25 +146,25 @@ $(envsubst < snowflake_container/spec.yaml)
    MIN_INSTANCES=1
    MAX_INSTANCES=1;"
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 show endpoints in service dp_sandbox_service;"
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 SHOW SERVICES;
 SELECT SYSTEM\$GET_SERVICE_STATUS('dp_sandbox_service');
 DESCRIBE SERVICE dp_sandbox_service;"
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 SHOW SERVICES;
 SELECT SYSTEM\$GET_SERVICE_LOGS('dp_sandbox_service', 0, 'dp-sandbox-service-container');"
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 CREATE OR REPLACE FUNCTION dp_sandbox_randint ()
@@ -172,12 +173,12 @@ CREATE OR REPLACE FUNCTION dp_sandbox_randint ()
   ENDPOINT='dp-sandbox-service-endpoint'
   AS '/randint';"
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 select dp_sandbox_randint();"
 
-snowsql -q "USE ROLE dp_sandbox_role;
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE database dp_container_service;
 USE SCHEMA data_schema;
 drop service dp_sandbox_service;"

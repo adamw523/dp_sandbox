@@ -4,8 +4,8 @@ set_env_vars:
 	@echo "Set environment variables by running: source ./scripts/load_env.sh"
 
 dev_configure_local_venv:
-	python3 -m venv .venv
-	.venv/bin/pip install -r app/requirements.txt -r client/requirements.txt
+	python3.11 -m venv .venv
+	.venv/bin/pip install -r app/requirements.txt -r client/requirements.txt -r snow_containers_streamlit/requirements.txt
 
 app_start:
 	docker compose start app
