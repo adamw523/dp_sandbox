@@ -117,8 +117,6 @@ CREATE IMAGE REPOSITORY IF NOT EXISTS dp_sandbox_repository;
 CREATE STAGE IF NOT EXISTS dp_sandbox_repository_stage
   DIRECTORY = ( ENABLE = true );"
 
-
-
 export SNOW_REGISTRY_URL=$(snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
 USE DATABASE dp_container_service;
 USE WAREHOUSE dp_sandbox_wh;
@@ -195,3 +193,36 @@ DROP STAGE dp_sandbox_repository_stage;
 
 ```
 
+#### Streamlit Staging / deploying
+
+```bash
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
+USE database dp_container_service;
+USE SCHEMA data_schema;
+CREATE STAGE IF NOT EXISTS dp_sandbox_streamlit_stage DIRECTORY = ( ENABLE = true );"
+
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
+USE DATABASE dp_container_service;
+USE SCHEMA data_schema;
+USE WAREHOUSE dp_sandbox_wh;
+PUT file://$(pwd)/snow_containers_streamlit/app.py @dp_container_service.data_schema.dp_sandbox_streamlit_stage overwrite=true auto_compress=false;"
+
+
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
+USE DATABASE dp_container_service;
+USE SCHEMA data_schema;
+USE WAREHOUSE dp_sandbox_wh;
+CREATE STREAMLIT containers_streamlit
+ROOT_LOCATION = '@dp_container_service.data_schema.dp_sandbox_streamlit_stage'
+MAIN_FILE = '/app.py'
+QUERY_WAREHOUSE = dp_sandbox_wh;"
+
+snowsql -q "USE ROLE ${SNOW_SANDBOX_ROLE};
+USE DATABASE dp_container_service;
+USE SCHEMA data_schema;
+USE WAREHOUSE dp_sandbox_wh;
+show streamlits;"
+
+
+
+```
