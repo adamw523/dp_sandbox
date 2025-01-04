@@ -8,7 +8,7 @@ dev_configure_local_venv:
 	.venv/bin/pip install -r app/requirements.txt -r client/requirements.txt -r snow_containers_streamlit/requirements.txt
 
 app_start:
-	docker compose start app
+	docker compose create app && docker compose start app
 
 app_stop:
 	docker compose stop app
@@ -26,10 +26,16 @@ pg_run_psql:
 	docker compose exec postgres psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} 
 
 pg_start:
-	docker compose start postgres
+	docker compose create postgres && docker compose start postgres
 
 pg_stop:
 	docker compose stop postgres
+
+pg_admin_start:
+	docker compose create pgadmin && docker compose start pgadmin
+
+pg_admin_stop:
+	docker compose stop pgadmin
 
 snow_sync:
 	docker compose run pgwarehouse pgwarehouse sync all
